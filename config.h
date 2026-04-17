@@ -70,21 +70,24 @@ static const char *flameshotcmd[]  = {"flameshot", "full", "-c", NULL};
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-		{ "font",               STRING,  &font },
-		{ "dmenufont",          STRING,  &dmenufont },
-		{ "normbgcolor",        STRING,  &normbgcolor },
-		{ "normbordercolor",    STRING,  &normbordercolor },
-		{ "normfgcolor",        STRING,  &normfgcolor },
-		{ "selbgcolor",         STRING,  &selbgcolor },
-		{ "selbordercolor",     STRING,  &selbordercolor },
-		{ "selfgcolor",         STRING,  &selfgcolor },
-		{ "borderpx",          	INTEGER, &borderpx },
-		{ "snap",            		INTEGER, &snap },
-		{ "showbar",          	INTEGER, &showbar },
-		{ "topbar",           	INTEGER, &topbar },
-		{ "nmaster",          	INTEGER, &nmaster },
-		{ "resizehints",       	INTEGER, &resizehints },
-		{ "mfact",           	 	FLOAT,   &mfact },
+		{ "font",         STRING,  &font },
+		{ "dmenufont",    STRING,  &dmenufont },
+
+    { "background",   STRING,  &normbgcolor },
+    { "color8",       STRING,  &normbordercolor },
+    { "foreground",   STRING,  &normfgcolor },
+
+    { "color4",       STRING,  &selbgcolor },
+    { "color4",       STRING,  &selbordercolor },
+    { "background",   STRING,  &selfgcolor },
+
+    { "borderpx",     INTEGER, &borderpx },
+    { "snap",         INTEGER, &snap },
+    { "showbar",      INTEGER, &showbar },
+    { "topbar",       INTEGER, &topbar },
+    { "nmaster",      INTEGER, &nmaster },
+    { "resizehints",  INTEGER, &resizehints },
+    { "mfact",        FLOAT,   &mfact },
 };
 
 static const Key keys[] = {

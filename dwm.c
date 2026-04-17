@@ -2163,18 +2163,21 @@ resource_load(XrmDatabase db, char *name, enum resource_type rtype, void *dst)
 	int *idst = NULL;
 	float *fdst = NULL;
 
-	sdst = dst;
+  sdst = dst;
 	idst = dst;
 	fdst = dst;
 
-	char fullname[256];
+	//char fullname[256];
 	char *type;
 	XrmValue ret;
 
-	snprintf(fullname, sizeof(fullname), "%s.%s", "dwm", name);
-	fullname[sizeof(fullname) - 1] = '\0';
+	if (!XrmGetResource(db, name, name, &type, &ret) || ret.addr == NULL)
+		return;
 
-	XrmGetResource(db, fullname, "*", &type, &ret);
+	//snprintf(fullname, sizeof(fullname), "%s", name);
+	//fullname[sizeof(fullname) - 1] = '\0';
+
+	//XrmGetResource(db, fullname, "*", &type, &ret);
 	if (!(ret.addr == NULL || strncmp("String", type, 64)))
 	{
 		switch (rtype) {
