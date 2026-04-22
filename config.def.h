@@ -1,4 +1,5 @@
 /* See LICENSE file for copyright and license details. */
+#include <X11/XF86keysym.h>
 
 /* appearance */
 static unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -48,7 +49,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -62,34 +63,48 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char *browsercmd[]  = { "firefox", NULL };
+static const char *flameshotcmd[]  = {"flameshot", "full", "-c", NULL};
 
 /*
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-		{ "font",               STRING,  &font },
-		{ "dmenufont",          STRING,  &dmenufont },
-		{ "normbgcolor",        STRING,  &normbgcolor },
-		{ "normbordercolor",    STRING,  &normbordercolor },
-		{ "normfgcolor",        STRING,  &normfgcolor },
-		{ "selbgcolor",         STRING,  &selbgcolor },
-		{ "selbordercolor",     STRING,  &selbordercolor },
-		{ "selfgcolor",         STRING,  &selfgcolor },
-		{ "borderpx",          	INTEGER, &borderpx },
-		{ "snap",            		INTEGER, &snap },
-		{ "showbar",          	INTEGER, &showbar },
-		{ "topbar",           	INTEGER, &topbar },
-		{ "nmaster",          	INTEGER, &nmaster },
-		{ "resizehints",       	INTEGER, &resizehints },
-		{ "mfact",           	 	FLOAT,   &mfact },
-};
+		{ "font",         STRING,  &font },
+		{ "dmenufont",    STRING,  &dmenufont },
 
+    { "background",   STRING,  &normbgcolor },
+    { "color8",       STRING,  &normbordercolor },
+    { "foreground",   STRING,  &normfgcolor },
+
+    { "color4",       STRING,  &selbgcolor },
+    { "color4",       STRING,  &selbordercolor },
+    { "background",   STRING,  &selfgcolor },
+
+    { "borderpx",     INTEGER, &borderpx },
+    { "snap",         INTEGER, &snap },
+    { "showbar",      INTEGER, &showbar },
+    { "topbar",       INTEGER, &topbar },
+    { "nmaster",      INTEGER, &nmaster },
+    { "resizehints",  INTEGER, &resizehints },
+    { "mfact",        FLOAT,   &mfact },
+};
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
+	{ MODKEY,                       XK_v,      spawn,          SHCMD("greenclip print | dmenu | xclip -selection clipboard") },
+	{ MODKEY,                       XK_p,      spawn,          {.v = flameshotcmd } },
+  { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+; kill -RTMIN+1 $(pidof dwmblocks)") },
+  { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-; kill -RTMIN+1 $(pidof dwmblocks)") },
+  { 0, XF86XK_AudioMute,        spawn, SHCMD("amixer set Master toggle; kill -RTMIN+1 $(pidof dwmblocks)") },
+  { 0, XF86XK_AudioPrev,        spawn, SHCMD("playerctl previous") },
+  { 0, XF86XK_AudioPlay,        spawn, SHCMD("playerctl play-pause") },
+  { 0, XF86XK_AudioNext,        spawn, SHCMD("playerctl next") },
+
+	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -99,11 +114,11 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
 	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
+	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
+	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
+	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
+	{ MODKEY|ControlMask,           XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
