@@ -77,7 +77,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browsercmd[]  = { "firefox", NULL };
-static const char *flameshotcmd[]  = {"flameshot", "full", "-c", NULL};
+static const Arg capturecmd  = SHCMD("maim -s | xclip -selection clipboard -t image/png");
+static const Arg capturedelaycmd  = SHCMD("maim -s -d 5 | xclip -selection clipboard -t image/png");
 
 /*
  * Xresources preferences to load at startup
@@ -109,7 +110,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
 	{ MODKEY,                       XK_v,      spawn,          SHCMD("greenclip print | dmenu | xclip -selection clipboard") },
-	{ MODKEY,                       XK_p,      spawn,          {.v = flameshotcmd } },
+	{ MODKEY,                       XK_p,      spawn,          capturecmd },
+	{ MODKEY|ShiftMask,             XK_p,      spawn,          capturedelaycmd },
   { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+; kill -RTMIN+1 $(pidof dwmblocks)") },
   { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-; kill -RTMIN+1 $(pidof dwmblocks)") },
   { 0, XF86XK_AudioMute,        spawn, SHCMD("amixer set Master toggle; kill -RTMIN+1 $(pidof dwmblocks)") },
