@@ -37,9 +37,14 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor   appicon*/
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1,         NULL },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1,         "󰈹"  },
+	/* class, instance, title, tags mask, isfloating, monitor, appicon*/
+	{ "firefox", NULL, NULL, 0, 0, -1, "󰈹"  },
+	{ "St", NULL, NULL, 0, 0, -1, ""  },
+	{ "steam", NULL, NULL, 0, 0, -1, ""  },
+	{ "corectrl", NULL, NULL, 1<<8, 0, 1, NULL  },
+	{ "KeePassXC", NULL, NULL, 1<<8, 0, 1, "󰟵"  },
+	{ "easyeffects", NULL, NULL, 1<<7, 0, 1, "󰺢"  },
+	{ "discord", NULL, NULL, 1<<1, 0, 1, ""  },
 };
 
 /* layout(s) */
