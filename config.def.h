@@ -63,6 +63,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
+#define HYPER (MODKEY|ShiftMask|ControlMask|Mod1Mask)
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -71,14 +72,6 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
-
-/* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
-static const char *termcmd[]  = { "st", NULL };
-static const char *browsercmd[]  = { "firefox", NULL };
-static const Arg capturecmd  = SHCMD("maim -s | xclip -selection clipboard -t image/png");
-static const Arg capturedelaycmd  = SHCMD("maim -s -d 5 | xclip -selection clipboard -t image/png");
 
 /*
  * Xresources preferences to load at startup
@@ -104,14 +97,27 @@ ResourcePref resources[] = {
     { "mfact",        FLOAT,   &mfact },
 };
 
+/* commands */
+static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbgcolor, "-nf", normfgcolor, "-sb", selbordercolor, "-sf", selfgcolor, NULL };
+static const char *termcmd[]  = { "st", NULL };
+static const char *browsercmd[]  = { "firefox", NULL };
+static const Arg clipcmd  = SHCMD("greenclip print | dmenu | xclip -selection clipboard");
+static const Arg capturecmd  = SHCMD("maim -s | xclip -selection clipboard -t image/png");
+static const Arg capturedelaycmd  = SHCMD("maim -s -d 5 | xclip -selection clipboard -t image/png");
+static const Arg discord  = SHCMD("discord &");
+static const Arg steam  = SHCMD("steam &");
+
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_space,  spawn,          {.v = dmenucmd } },
 	{ MODKEY,                       XK_t,      spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_b,      spawn,          {.v = browsercmd } },
-	{ MODKEY,                       XK_v,      spawn,          SHCMD("greenclip print | dmenu | xclip -selection clipboard") },
+	{ MODKEY,                       XK_v,      spawn,          clipcmd },
 	{ MODKEY,                       XK_p,      spawn,          capturecmd },
 	{ MODKEY|ShiftMask,             XK_p,      spawn,          capturedelaycmd },
+	{ HYPER,                        XK_d,      spawn,          discord },
+	{ HYPER,                        XK_s,      spawn,          steam },
   { 0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer set Master 5%+; kill -RTMIN+1 $(pidof dwmblocks)") },
   { 0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer set Master 5%-; kill -RTMIN+1 $(pidof dwmblocks)") },
   { 0, XF86XK_AudioMute,        spawn, SHCMD("amixer set Master toggle; kill -RTMIN+1 $(pidof dwmblocks)") },
