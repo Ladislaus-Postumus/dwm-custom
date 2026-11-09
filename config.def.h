@@ -122,6 +122,7 @@ static const Arg capturedelaycmd =
 static const Arg discord = SHCMD("discord &");
 static const Arg steam = SHCMD("steam &");
 static const Arg inputcmd = SHCMD("inputdevices");
+static const Arg gitmojicmd = SHCMD("dmenu-gitmoji");
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
@@ -134,6 +135,7 @@ static const Key keys[] = {
     {HYPER, XK_d, spawn, discord},
     {HYPER, XK_s, spawn, steam},
     {HYPER, XK_i, spawn, inputcmd},
+    {HYPER, XK_g, spawn, gitmojicmd},
     {0, XF86XK_AudioRaiseVolume, spawn,
      SHCMD("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+; kill -RTMIN+1 "
            "$(pidof dwmblocks)")},
