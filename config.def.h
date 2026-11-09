@@ -46,7 +46,6 @@ static const Rule rules[] = {
     {"KeePassXC", NULL, NULL, 1 << 8, 0, 1, "󰟵"},
     {"easyeffects", NULL, NULL, 1 << 7, 0, 1, "󰺢"},
     {"discord", NULL, NULL, 1 << 1, 0, 1, ""},
-    {"BongoCat", NULL, NULL, 0, 1, -1, NULL},
 };
 
 /* layout(s) */
@@ -79,6 +78,11 @@ static const Layout layouts[] = {
   {                                                                            \
     .v = (const char *[]) { "/bin/sh", "-c", cmd, NULL }                       \
   }
+#define CMD(...)                                                               \
+  {                                                                            \
+    .v = (const char *[]) { __VA_ARGS__, NULL }                                \
+  }
+#define VOL(args) SHCMD("wpctl " args "; pkill -RTMIN+1 dwmblocks")
 
 /*
  * Xresources preferences to load at startup
@@ -111,40 +115,33 @@ static const char *dmenucmd[] = {"dmenu_run", "-m",  dmenumon,       "-fn",
                                  dmenufont,   "-nb", normbgcolor,    "-nf",
                                  normfgcolor, "-sb", selbordercolor, "-sf",
                                  selfgcolor,  NULL};
-static const char *termcmd[] = {"st", NULL};
-static const char *browsercmd[] = {"firefox", NULL};
 static const Arg clipcmd =
     SHCMD("greenclip print | dmenu | xclip -selection clipboard");
 static const Arg capturecmd =
     SHCMD("maim -s | xclip -selection clipboard -t image/png");
 static const Arg capturedelaycmd =
     SHCMD("maim -s -d 5 | xclip -selection clipboard -t image/png");
-static const Arg discord = SHCMD("discord &");
-static const Arg steam = SHCMD("steam &");
-static const Arg inputcmd = SHCMD("inputdevices");
-static const Arg gitmojicmd = SHCMD("dmenu-gitmoji");
 
 static const Key keys[] = {
     /* modifier                     key        function        argument */
     {MODKEY, XK_space, spawn, {.v = dmenucmd}},
-    {MODKEY, XK_t, spawn, {.v = termcmd}},
-    {MODKEY, XK_b, spawn, {.v = browsercmd}},
+    {MODKEY, XK_t, spawn, CMD("st")},
+
+    {HYPER, XK_d, spawn, CMD("discord")},
+    {HYPER, XK_i, spawn, CMD("inputdevices")},
+    {HYPER, XK_s, spawn, CMD("steam")},
+    {MODKEY, XK_b, spawn, CMD("firefox")},
+    {MODKEY, XK_g, spawn, CMD("dmenu-gitmoji")},
     {MODKEY, XK_v, spawn, clipcmd},
+
     {MODKEY, XK_p, spawn, capturecmd},
     {MODKEY | ShiftMask, XK_p, spawn, capturedelaycmd},
-    {HYPER, XK_d, spawn, discord},
-    {HYPER, XK_s, spawn, steam},
-    {HYPER, XK_i, spawn, inputcmd},
-    {HYPER, XK_g, spawn, gitmojicmd},
+
     {0, XF86XK_AudioRaiseVolume, spawn,
-     SHCMD("wpctl set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+; kill -RTMIN+1 "
-           "$(pidof dwmblocks)")},
+     VOL("set-volume -l 1.0 @DEFAULT_AUDIO_SINK@ 5%+")},
     {0, XF86XK_AudioLowerVolume, spawn,
-     SHCMD("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-; kill -RTMIN+1 $(pidof "
-           "dwmblocks)")},
-    {0, XF86XK_AudioMute, spawn,
-     SHCMD("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle; kill -RTMIN+1 $(pidof "
-           "dwmblocks)")},
+     VOL("set-volume @DEFAULT_AUDIO_SINK@ 5%-")},
+    {0, XF86XK_AudioMute, spawn, VOL("set-mute @DEFAULT_AUDIO_SINK@ toggle")},
     {0, XF86XK_AudioPrev, spawn, SHCMD("playerctl previous")},
     {0, XF86XK_AudioPlay, spawn, SHCMD("playerctl play-pause")},
     {0, XF86XK_AudioNext, spawn, SHCMD("playerctl next")},
@@ -183,7 +180,6 @@ static const Button buttons[] = {
     {ClkLtSymbol, 0, Button1, setlayout, {0}},
     {ClkLtSymbol, 0, Button3, setlayout, {.v = &layouts[2]}},
     {ClkWinTitle, 0, Button2, zoom, {0}},
-    {ClkStatusText, 0, Button2, spawn, {.v = termcmd}},
     {ClkClientWin, MODKEY, Button1, movemouse, {0}},
     {ClkClientWin, MODKEY, Button2, togglefloating, {0}},
     {ClkClientWin, MODKEY, Button3, resizemouse, {0}},
