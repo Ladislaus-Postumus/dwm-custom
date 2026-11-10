@@ -3,6 +3,8 @@
 *.so
 *.orig
 *.rej
+
+.direnv/
 config.h
 dwm
 patches/
