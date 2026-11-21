@@ -143,6 +143,8 @@ static const Key keys[] = {
     {0, XF86XK_AudioLowerVolume, spawn,
      VOL("set-volume @DEFAULT_AUDIO_SINK@ 5%-")},
     {0, XF86XK_AudioMute, spawn, VOL("set-mute @DEFAULT_AUDIO_SINK@ toggle")},
+    {0, XF86XK_AudioMicMute, spawn,
+     VOL("set-mute @DEFAULT_AUDIO_SOURCE@ toggle")},
     {0, XF86XK_AudioPrev, spawn, SHCMD("playerctl previous")},
     {0, XF86XK_AudioPlay, spawn, SHCMD("playerctl play-pause")},
     {0, XF86XK_AudioNext, spawn, SHCMD("playerctl next")},
