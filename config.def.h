@@ -70,8 +70,9 @@ static const Layout layouts[] = {
 #define TAGKEYS(KEY, TAG)                                                      \
   {MODKEY, KEY, view, {.ui = 1 << TAG}},                                       \
       {MODKEY | ControlMask, KEY, toggleview, {.ui = 1 << TAG}},               \
-      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}},                        \
-      {MODKEY | ControlMask | ShiftMask, KEY, toggletag, {.ui = 1 << TAG}},
+      {MODKEY | ShiftMask, KEY, tag, {.ui = 1 << TAG}}, {                      \
+    MODKEY | ControlMask | ShiftMask, KEY, toggletag, { .ui = 1 << TAG }       \
+  }
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd)                                                             \
@@ -167,9 +168,25 @@ static const Key keys[] = {
     {MODKEY, XK_period, focusmon, {.i = +1}},
     {MODKEY | ShiftMask, XK_comma, tagmon, {.i = -1}},
     {MODKEY | ShiftMask, XK_period, tagmon, {.i = +1}},
-    TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
-        TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
-            TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_q, quit, {0}},
+    TAGKEYS(XK_1, 0),
+    TAGKEYS(XK_2, 1),
+    TAGKEYS(XK_3, 2),
+    TAGKEYS(XK_4, 3),
+    TAGKEYS(XK_5, 4),
+    TAGKEYS(XK_6, 5),
+    TAGKEYS(XK_7, 6),
+    TAGKEYS(XK_8, 7),
+    TAGKEYS(XK_9, 8),
+    TAGKEYS(XK_KP_End, 0),
+    TAGKEYS(XK_KP_Down, 1),
+    TAGKEYS(XK_KP_Next, 2),
+    TAGKEYS(XK_KP_Left, 3),
+    TAGKEYS(XK_KP_Begin, 4),
+    TAGKEYS(XK_KP_Right, 5),
+    TAGKEYS(XK_KP_Home, 6),
+    TAGKEYS(XK_KP_Up, 7),
+    TAGKEYS(XK_KP_Prior, 8),
+    {MODKEY | ShiftMask, XK_q, quit, {0}},
 };
 
 /* button definitions */
