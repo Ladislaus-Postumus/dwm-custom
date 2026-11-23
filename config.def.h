@@ -132,6 +132,7 @@ static const Key keys[] = {
     {HYPER, XK_i, spawn, CMD("inputdevices")},
     {HYPER, XK_s, spawn, CMD("steam")},
     {MODKEY, XK_b, spawn, CMD("firefox")},
+    {MODKEY, XK_c, spawn, CMD("dcalc")},
     {MODKEY, XK_g, spawn, CMD("dmenu-gitmoji")},
     {MODKEY, XK_v, spawn, clipcmd},
 
